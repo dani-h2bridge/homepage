@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>h2bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --bg-card: #FFFFFF;
+    --text-primary: #1B3A5F;
+    --text-secondary: #5A6E80;
+    --text-muted: #9AABB8;
+    --accent: #3DBDAD;
+    --accent-light: #E6F6F3;
+    --accent-warm: #E07A5F;
+    --accent-gold: #E9C46A;
+    --border: rgba(27,58,95,0.10);
+    --border-soft: rgba(27,58,95,0.06);
+    --serif: 'Lora', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(248,246,241,0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+
+  /* HERO */
+  .hero {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 7rem 2rem 6rem;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: 46px;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.85rem 2rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 99px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .hero-cta:hover { background: #2EA89A; transform: translateY(-1px); }
+  .hero-cta-arrow { font-size: 18px; transition: transform 0.2s; }
+  .hero-cta:hover .hero-cta-arrow { transform: translateX(3px); }
+
+  .hero-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 3rem;
+    font-size: 13px;
+  }
+  .flow-tag {
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+  .flow-tag.hope { background: #E6F6F3; color: #2A9D8F; }
+  .flow-tag.edu { background: #FDF3E1; color: #B8860B; }
+  .flow-tag.heart { background: #FCEAE5; color: #C0553E; }
+  .flow-arrow { color: var(--text-muted); font-size: 14px; }
+
+  /* SECTION COMMON */
+  section { padding: 4rem 2rem; }
+  .section-inner { max-width: 900px; margin: 0 auto; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .section-link {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .section-link:hover { text-decoration: underline; }
+
+  /* SERVICE */
+  .service-section { padding: 0 2rem 5rem; }
+  .service-card {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .service-left {}
+  .service-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+  }
+  .service-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  .service-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .service-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+  }
+  .service-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .service-cta:hover { gap: 10px; }
+
+  .service-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .service-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    border-radius: 10px;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+  .step-text strong { font-weight: 500; }
+
+  /* IMPACT */
+  .impact-section { background: var(--text-primary); padding: 4rem 2rem; }
+  .impact-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .impact-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 1rem;
+  }
+  .impact-title {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.4;
+    margin-bottom: 2.5rem;
+  }
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .impact-card {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+  }
+  .impact-num {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .impact-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+  }
+
+  /* BLOG */
+  .blog-section {}
+  .blog-coming {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-muted);
+  }
+  .blog-coming-icon {
+    font-size: 36px;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+  .blog-coming-text {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .blog-coming-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  /* NOTICE */
+  .notice-section { background: var(--bg-card); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
+  .notice-list { list-style: none; }
+  .notice-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border-soft);
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .notice-item:last-child { border-bottom: none; }
+  .notice-item:hover .notice-title { color: var(--accent); }
+  .notice-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: 80px;
+  }
+  .notice-title {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    transition: color 0.15s;
+  }
+  .notice-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--accent-light);
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  /* SNS */
+  .sns-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .sns-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-card);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .sns-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .sns-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+  }
+  .footer-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-left {}
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer-sns {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .footer-sns a {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .footer-sns a:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 4rem 1.25rem 3rem; }
+    .hero-title { font-size: 32px; }
+    .service-card { grid-template-columns: 1fr; gap: 2rem; padding: 2rem; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .nav-links { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo"><img src="h2bridge_logo.png" alt="h2bridge" style="height:32px;vertical-align:middle;"></a>
+    <ul class="nav-links">
+      <li><a href="#service">Service</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#notice">Notice</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow fade-up delay-1">h2bridge.xyz</p>
+  <h1 class="hero-title fade-up delay-2">Bridging<br><em>hope</em> to heart</h1>
+  <p class="hero-sub fade-up delay-3">
+    Small technology, big change for tomorrow.<br>
+    We build services and channel part of the revenue into education for children.
+  </p>
+  <a href="#service" class="hero-cta fade-up delay-4">
+    See what we build <span class="hero-cta-arrow">→</span>
+  </a>
+  <div class="hero-flow fade-up delay-5">
+    <span class="flow-tag hope">hope</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-tag edu">education</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-tag heart">heart</span>
+  </div>
+</div>
+
+<!-- SERVICE: Idea Vault -->
+<section id="service" class="service-section">
+  <div class="service-card fade-up">
+    <div class="service-left">
+      <span class="service-badge">First Product</span>
+      <h2 class="service-title">One link in,<br><em>ideas</em> out</h2>
+      <p class="service-desc">
+        Links you saved "for later" but never revisited.<br>
+        Drop them into Idea Vault — we distill the insight so you don't have to.<br>
+        Your read-it-later pile becomes ideas you can actually use.
+      </p>
+      <a href="#" class="service-cta">Explore Idea Vault →</a>
+    </div>
+    <div class="service-right">
+      <div class="service-step">
+        <span class="step-num">1</span>
+        <p class="step-text"><strong>Paste a link</strong> — articles, videos, tweets, anything</p>
+      </div>
+      <div class="service-step">
+        <span class="step-num">2</span>
+        <p class="step-text"><strong>AI reads and organizes</strong> — key summary + smart tagging</p>
+      </div>
+      <div class="service-step">
+        <span class="step-num">3</span>
+        <p class="step-text"><strong>Ideas compound</strong> — search, connect, and pull them when you need</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section class="impact-section">
+  <div class="impact-inner">
+    <p class="impact-eyebrow fade-up delay-1">Our Promise</p>
+    <h2 class="impact-title fade-up delay-2">Your subscription becomes a classroom</h2>
+    <div class="impact-grid fade-up delay-3">
+      <div class="impact-card">
+        <p class="impact-num">100</p>
+        <p class="impact-label">Quarterly average paid subscribers</p>
+      </div>
+      <div class="impact-card">
+        <p class="impact-num">3 mo</p>
+        <p class="impact-label">Of education funded for children</p>
+      </div>
+      <div class="impact-card">
+        <p class="impact-num">Every Q</p>
+        <p class="impact-label">Settled and shared transparently each quarter</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" class="blog-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Blog</h2>
+    </div>
+    <div class="blog-coming">
+      <div class="blog-coming-icon">✎</div>
+      <p class="blog-coming-text">Coming Soon</p>
+      <p class="blog-coming-sub">We're crafting our first story</p>
+    </div>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<section id="notice" class="notice-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Notice</h2>
+    </div>
+    <ul class="notice-list">
+      <li class="notice-item">
+        <span class="notice-date">2026.03.15</span>
+        <span class="notice-title">Notice title goes here</span>
+        <span class="notice-badge">New</span>
+      </li>
+      <li class="notice-item">
+        <span class="notice-date">2026.02.20</span>
+        <span class="notice-title">Second notice title goes here</span>
+      </li>
+      <li class="notice-item">
+        <span class="notice-date">2026.01.10</span>
+        <span class="notice-title">Third notice title goes here</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- SNS -->
+<section>
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Follow</h2>
+    </div>
+    <div class="sns-row">
+
+      <a href="#" class="sns-btn">
+        <svg class="sns-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        YouTube
+      </a>
+
+      <a href="#" class="sns-btn">
+        <svg class="sns-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        X (Twitter)
+      </a>
+
+      <a href="#" class="sns-btn">
+        <svg class="sns-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.5c-5.25 0-8.5 3.5-8.5 7.5 0 2.5 1.5 4.5 3.5 5.5-.2.8-.7 2.5-1 3 0 0 2.5-.5 4-1.5.8.2 1.6.3 2 .3 5.25 0 8.5-3.22 8.5-7.5S17.25 2.5 12 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        Threads
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <p class="footer-logo">h2bridge</p>
+      <p class="footer-copy">© 2026 h2bridge · Bridging hope to heart</p>
+    </div>
+    <div class="footer-sns">
+      <a href="#" title="YouTube">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#" title="X">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M4 4l16 16M4 20L20 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+      <a href="#" title="Threads">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2.5c-5.25 0-8.5 3.5-8.5 7.5 0 2.5 1.5 4.5 3.5 5.5-.2.8-.7 2.5-1 3 0 0 2.5-.5 4-1.5.8.2 1.6.3 2 .3 5.25 0 8.5-3.22 8.5-7.5S17.25 2.5 12 2.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
